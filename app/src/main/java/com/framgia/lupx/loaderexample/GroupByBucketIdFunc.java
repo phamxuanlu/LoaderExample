@@ -30,18 +30,19 @@ public class GroupByBucketIdFunc implements Func1<Cursor, Cursor> {
         cursor.moveToFirst();
         Set<Long> bucketIds = new HashSet<>();
         while (!cursor.isAfterLast()) {
-            long id = cursor.getLong(columnIndexs.get(MediaStore.Images.ImageColumns._ID));
+            long id = cursor.getLong(columnIndexs.get(MediaStore.Images.ImageColumns.BUCKET_ID));
             if (!bucketIds.contains(id)) {
                 bucketCursor.addRow(new Object[]{
+                    cursor.getLong(columnIndexs.get(MediaStore.Images.ImageColumns._ID)),
                     id,
-                    cursor.getLong(columnIndexs.get(MediaStore.Images.ImageColumns.BUCKET_ID)),
-                    cursor.getString(columnIndexs.get(MediaStore.Images.ImageColumns
-                        .BUCKET_DISPLAY_NAME)),
+                    cursor.getString(columnIndexs.get(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME)),
+                    cursor.getString(columnIndexs.get(MediaStore.Images.ImageColumns.DISPLAY_NAME)),
+                    cursor.getString(columnIndexs.get(MediaStore.Images.ImageColumns.DATA))
                 });
             }
             bucketIds.add(id);
             cursor.moveToNext();
         }
-        return null;
+        return bucketCursor;
     }
 }

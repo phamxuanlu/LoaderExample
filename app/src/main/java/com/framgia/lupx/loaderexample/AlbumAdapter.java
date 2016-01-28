@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,9 +36,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     @Override
     public void onBindViewHolder(AlbumViewHolder holder, int position) {
         FolderItem fi = folders.get(position);
+        holder.name.setText(fi.bucket_display_name);
         File file = new File(fi.path);
         Picasso.with(context)
             .load(file)
+            .resize(200, 200)
             .centerCrop()
             .into(holder.imgvThumbnail);
     }
@@ -49,9 +52,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     public class AlbumViewHolder extends RecyclerView.ViewHolder {
         public ImageView imgvThumbnail;
+        public TextView name;
 
         public AlbumViewHolder(View view) {
             super(view);
+            name = (TextView) view.findViewById(R.id.name);
             imgvThumbnail = (ImageView) view.findViewById(R.id.imgvThumbnail);
         }
     }

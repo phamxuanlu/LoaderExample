@@ -2,13 +2,26 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="vertical">
+    android:layout_height="180dp"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/imgvThumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"/>
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#CCC"
+        android:ellipsize="end"
+        android:lines="1"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:textColor="#101010"/>
 
 </RelativeLayout>

@@ -1,15 +1,20 @@
 package com.framgia.lupx.loaderexample;
 
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity {
     private List<ImageItem> listImages;
@@ -27,38 +32,37 @@ public class MainActivity extends AppCompatActivity {
         lstResult.setLayoutManager(lm);
         adapter = new ImagesAdapter(this, listImages);
         lstResult.setAdapter(adapter);
-        progress = new ProgressDialog(this);
-        progress.setMessage("Loading...");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.show();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new AlbumFragment());
+        transaction.commit();
+        Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                try {
+                    for (int i = 0; i < 10; i++) {
+                        subscriber.onNext(i);
+                    }
+                    subscriber.onCompleted();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.v("onCompleted", "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.v("onNex", String.valueOf(integer));
+            }
+        });
     }
-//    private List<ImageItem> parseData(Cursor data) {
-//        List<ImageItem> list = new ArrayList<>();
-//        if (data == null || data.getCount() == 0) {
-//            return list;
-//        }
-//        data.moveToFirst();
-//        if (columnIndexs == null) {
-//            columnIndexs = new HashMap<>();
-//            for (String key : PROJECTIONS) {
-//                columnIndexs.put(key, data.getColumnIndex(key));
-//            }
-//        }
-//        while (!data.isAfterLast()) {
-//            ImageItem item = new ImageItem();
-//            item.bucket_id = data.getInt(columnIndexs.get(MediaStore.Images.ImageColumns
-//                .BUCKET_ID));
-//            item.bucket_display_name = data.getString(columnIndexs.get(MediaStore.Images
-//                .ImageColumns.BUCKET_DISPLAY_NAME));
-//            item.bucket_name = data.getString(columnIndexs.get(MediaStore.Images.ImageColumns
-//                .DISPLAY_NAME));
-//            item.path = data.getString(columnIndexs.get(MediaStore.Images.ImageColumns.DATA));
-//            list.add(item);
-//            data.moveToNext();
-//        }
-//        return list;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

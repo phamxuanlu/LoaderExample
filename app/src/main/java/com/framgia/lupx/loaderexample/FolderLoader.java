@@ -14,6 +14,7 @@ public class FolderLoader extends CursorLoader {
         MediaStore.Images.ImageColumns._ID,
         MediaStore.Images.ImageColumns.BUCKET_ID,
         MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+        MediaStore.Images.ImageColumns.DISPLAY_NAME,
         MediaStore.Images.ImageColumns.DATA
     };
     private static final Uri FOLDER_PHOTO_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;

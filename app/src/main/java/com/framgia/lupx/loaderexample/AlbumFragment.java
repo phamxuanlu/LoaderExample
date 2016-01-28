@@ -25,7 +25,9 @@ public class AlbumFragment extends Fragment {
     private static final String[] PROJECTIONS = new String[]{
         MediaStore.Images.ImageColumns._ID,
         MediaStore.Images.ImageColumns.BUCKET_ID,
-        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME
+        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+        MediaStore.Images.ImageColumns.DISPLAY_NAME,
+        MediaStore.Images.ImageColumns.DATA
     };
     private static final int ALBUMS_LOADER_ID = 1;
     private RecyclerView rcvAlbums;
@@ -62,6 +64,7 @@ public class AlbumFragment extends Fragment {
                     Cursor cursor = new GroupByBucketIdFunc().call(data);
                     folders.clear();
                     folders.addAll(parseData(cursor));
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
